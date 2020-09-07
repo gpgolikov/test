@@ -43,7 +43,7 @@ constexpr auto c_text =
     "M. A. P. Mainly all pictures. Shapely bathers on golden strand. World’s biggest balloon. Double marriage of sisters celebrated. "
     "Two bridegrooms laughing heartily at each other. Cuprani too, printer. More Irish than the Irish."sv;
 
-constexpr auto c_delim = " ,.!?;\"'-"sv;
+constexpr auto c_delim = " ,.!?;\"'-\n\t"sv;
 
 auto split(std::string_view value, std::string_view delim)
 {
@@ -124,14 +124,15 @@ int main(int argc, char* argv[])
 
     test::MultiQueueProcessor<std::string> queues;
     
+    unsigned odd_count = 0, even_count = 0;
     const auto consumers = test::MakeConsumers<std::string, EVEN_SIZE_WORD_QUEUE>(
-        [] (unsigned, const std::string& value)
+        [&even_count] (unsigned, const std::string& value) mutable
         {
-            std::cout << value << std::endl;
+            ++even_count;
         },
-        [] (unsigned, const std::string& value)
+        [&odd_count] (unsigned, const std::string& value) mutable
         {
-            std::cerr << value << std::endl;
+            ++odd_count;
         });
     consumers.SubscribeTo(queues);
 
@@ -146,6 +147,7 @@ int main(int argc, char* argv[])
     while (threads.size() < nthreads - 1)
     {
         const auto pos = text.find_first_of(c_delim, length);
+
         threads.emplace_back([value = text.substr(0, pos), &queues]
         {
             process(value, queues);
@@ -161,6 +163,9 @@ int main(int argc, char* argv[])
     }
 
     queues.Stop();
+
+    std::cout << "Even word sizes count = " << even_count << std::endl;
+    std::cout << "Odd word sizes count = " << odd_count << std::endl;
 
     return EXIT_SUCCESS;
 }

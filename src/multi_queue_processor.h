@@ -115,6 +115,7 @@ public:
     void Stop()
     {
         running_ = false;
+        cv_.notify_one();
     }
 
     /// @brief Adds association of consumer with queue specified by @c key
@@ -260,7 +261,7 @@ private:
     std::shared_mutex guard_;            ///< @c queues_ read-write guard
     std::condition_variable_any cv_;    ///< Conditional variable to notify working thread
                                         ///     about new value in any queue.
-    std::atomic_bool running_;            ///< Flag indicates whether execution is stopped or run.
+    std::atomic_bool running_ = false;  ///< Flag indicates whether execution is stopped or run.
     std::thread th_;                    ///< Working thread.
 };
 
