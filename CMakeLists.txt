@@ -15,12 +15,6 @@ endif()
 
 include(${CMAKE_BINARY_DIR}/conan.cmake)
 
-if(UNIX AND NOT APPLE)
-    add_compile_options("-stdlib=libc++")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -lc++abi")
-endif()
-
 conan_cmake_run(REQUIRES
                     boost/1.70.0@conan/stable
                 OPTIONS
@@ -29,15 +23,3 @@ conan_cmake_run(REQUIRES
                 BUILD missing)
 
 add_subdirectory(src)
-
-set(CPACK_GENERATOR DEB)
-
-set(CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
-set(CPACK_PACKAGE_VERSION_MINOR "${PROJECT_VERSION_MINOR}")
-set(CPACK_PACKAGE_VERSION_PATCH "${PROJECT_VERSION_PATCH}")
-
-set(CPACK_PACKAGE_CONTACT gpgolikov@gmail.com)
-
-set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
-
-include(CPack)
