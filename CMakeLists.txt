@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.2)
 
 cmake_policy(SET CMP0063 NEW)
 
-project(test VERSION 0.0.$ENV{TRAVIS_BUILD_NUMBER})
+project(test VERSION 0.0.1)
 
 configure_file(version.h.in ${CMAKE_BINARY_DIR}/version.h)
 include_directories(${CMAKE_BINARY_DIR})

@@ -48,8 +48,6 @@ class MultiQueueProcessor
         IConsumerPtr<Value, Key> consumer;    ///< Appropriate queue consumer.
         std::deque<Value> values;             ///< Actually queue.
 
-        Queue() {}
-
         explicit Queue(IConsumerPtr<Value, Key> cons)
             : consumer(std::move(cons))
         {}
