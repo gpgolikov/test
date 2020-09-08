@@ -60,8 +60,8 @@ class MultiQueueProcessor
 
     /// @brief Represents thread safe single queue.
     struct QueueSafe : Queue {
-        std::mutex guard;                   ///< Queue guard is used to prevent data racing in case when
-                                            ///   queue is accessed concurrently.
+        std::mutex guard;   ///< Queue guard is used to prevent data racing in case when
+                            ///   queue is accessed concurrently.
 
         explicit QueueSafe(IConsumerPtr<Value, Key> cons)
             : Queue(std::move(cons))
@@ -255,8 +255,8 @@ private:
     }
 
 private:
-    Queues queues_;                        ///< Queues with consumers.
-    std::shared_mutex guard_;            ///< @c queues_ read-write guard
+    Queues queues_;                     ///< Queues with consumers.
+    std::shared_mutex guard_;           ///< @c queues_ read-write guard
     std::condition_variable_any cv_;    ///< Conditional variable to notify working thread
                                         ///     about new value in any queue.
     std::atomic_bool running_ = false;  ///< Flag indicates whether execution is stopped or run.

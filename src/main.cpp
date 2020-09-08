@@ -126,11 +126,11 @@ int main(int argc, char* argv[])
     
     unsigned odd_count = 0, even_count = 0;
     const auto consumers = test::MakeConsumers<std::string, EVEN_SIZE_WORD_QUEUE>(
-        [&even_count] (unsigned, const std::string& value) mutable
+        [&even_count] (unsigned, const std::string& value)
         {
             ++even_count;
         },
-        [&odd_count] (unsigned, const std::string& value) mutable
+        [&odd_count] (unsigned, const std::string& value)
         {
             ++odd_count;
         });
